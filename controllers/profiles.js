@@ -33,7 +33,9 @@ async function addPhoto(req, res) {
 
 async function show(req, res) {
   try {
-    const profile = await Profile.findById(req.params.profileId).populate('recipes')
+    const profile = await Profile.findById(req.params.profileId)
+    .populate('recipes')
+    .populate('shoppingList.recipe')
     res.json(profile)
   } catch (error) {
     console.log(error)
@@ -43,11 +45,12 @@ async function show(req, res) {
 
 async function addIngredient(req, res) {
   try {
-    const recipe = await Recipe.find({edamamId: req.body.edamamId})[0]
+    const recipe = await Recipe.find({edamamId: req.body.edamamId})
+    const recipeId = recipe[0]
     const profile = await Profile.findById(req.user.profile)
     .populate('recipes')
     req.body.ingredients.forEach(ingredient => {
-      profile.shoppingList.push({item: ingredient, recipe: recipe})
+      profile.shoppingList.push({item: ingredient, recipe: recipeId})
     })
     profile.save()
     res.json(profile)
