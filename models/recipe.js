@@ -4,7 +4,8 @@ const Schema = mongoose.Schema
 
 const recipeSchema = new Schema({
   title: String,
-  edamamId: String
+  edamamId: String,
+  addedBy: {type: Schema.Types.ObjectId, ref: 'Profile'}
 },{
   timestamps: true,
 })

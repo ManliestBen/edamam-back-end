@@ -1,4 +1,5 @@
 import { Recipe } from "../models/recipe.js"
+import { Profile } from "../models/profile.js"
 const edamamUrl = `https://api.edamam.com/api/recipes/v2`
 
 async function search(req, res) {
@@ -25,7 +26,23 @@ async function show(req, res) {
   }
 }
 
+async function create(req, res) {
+  // add an addedBy property to req.body
+  req.body.addedBy = req.user.profile
+  // create the new recipe
+  const recipe = await Recipe.create(req.body)
+  // find the profile of the logged in user (populate recipes)
+  const profile = await Profile.findById(req.user.profile).populate('recipes')
+  // add the full recipe to the profile
+  profile.recipes.push(recipe)
+  // save the profile
+  await profile.save()
+  // respond to the front end with the update profile
+  res.json(profile)
+}
+
 export {
   search,
-  show
+  show,
+  create
 }

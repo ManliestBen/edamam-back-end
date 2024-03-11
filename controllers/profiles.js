@@ -30,4 +30,14 @@ async function addPhoto(req, res) {
   }
 }
 
-export { index, addPhoto }
+async function show(req, res) {
+  try {
+    const profile = await Profile.findById(req.params.profileId).populate('recipes')
+    res.json(profile)
+  } catch (error) {
+    console.log(err)
+    res.status(500).json(err)
+  }
+}
+
+export { index, addPhoto, show }

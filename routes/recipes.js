@@ -9,6 +9,7 @@ const router = Router()
 
 /*---------- Protected Routes ----------*/
 router.use(decodeUserFromToken)
+router.post('/', checkAuth, recipesCtrl.create)
 router.post('/search', checkAuth, recipesCtrl.search)
 router.get('/:edamamId', checkAuth, recipesCtrl.show)
 
