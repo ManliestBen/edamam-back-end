@@ -1,4 +1,5 @@
 import { Profile } from '../models/profile.js'
+import { Recipe } from '../models/recipe.js'
 import { v2 as cloudinary } from 'cloudinary'
 
 async function index(req, res) {
@@ -42,11 +43,11 @@ async function show(req, res) {
 
 async function addIngredient(req, res) {
   try {
-    console.log(req.body)
+    const recipe = await Recipe.find({edamamId: req.body.edamamId})[0]
     const profile = await Profile.findById(req.user.profile)
     .populate('recipes')
     req.body.ingredients.forEach(ingredient => {
-      profile.shoppingList.push({item: ingredient, recipe: req.body.edamamId})
+      profile.shoppingList.push({item: ingredient, recipe: recipe})
     })
     profile.save()
     res.json(profile)
