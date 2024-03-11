@@ -11,6 +11,7 @@ const router = Router()
 router.use(decodeUserFromToken)
 router.get('/', checkAuth, profilesCtrl.index)
 router.get('/:profileId', checkAuth, profilesCtrl.show)
+router.post('/add-ingredients', checkAuth, profilesCtrl.addIngredient)
 router.put('/:id/add-photo', checkAuth, profilesCtrl.addPhoto)
 
 export { router }

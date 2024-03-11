@@ -5,7 +5,7 @@ const Schema = mongoose.Schema
 const shoppingListSchema = new Schema({
   item: String,
   recipe: {type: Schema.Types.ObjectId, ref: 'Recipe'},
-  purchased: Boolean
+  purchased: {type: Boolean, default: false}
 }, {
   timestamps: true
 })

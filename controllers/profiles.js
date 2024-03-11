@@ -35,9 +35,26 @@ async function show(req, res) {
     const profile = await Profile.findById(req.params.profileId).populate('recipes')
     res.json(profile)
   } catch (error) {
-    console.log(err)
-    res.status(500).json(err)
+    console.log(error)
+    res.status(500).json(error)
   }
 }
 
-export { index, addPhoto, show }
+async function addIngredient(req, res) {
+  try {
+    console.log(req.body)
+    const profile = await Profile.findById(req.user.profile)
+    .populate('recipes')
+    req.body.ingredients.forEach(ingredient => {
+      profile.shoppingList.push({item: ingredient, recipe: req.body.edamamId})
+    })
+    profile.save()
+    res.json(profile)
+  } catch (error) {
+    console.log(error)
+    res.status(500).json(error)
+  }
+  
+}
+
+export { index, addPhoto, show, addIngredient }
