@@ -13,6 +13,19 @@ async function search(req, res) {
   }
 }
 
+async function show(req, res) {
+  try {
+    const apiResponse = await fetch(`${edamamUrl}/${req.params.edamamId}?type=public&app_id=${process.env.EDAMAM_APP_ID}&app_key=${process.env.EDAMAM_APP_KEY}`)
+    const apiData = await apiResponse.json()
+    delete apiData['_links']
+    res.json(apiData.recipe)
+  } catch (error) {
+    console.log(error)
+    res.status(500).json(error)
+  }
+}
+
 export {
-  search
+  search,
+  show
 }
